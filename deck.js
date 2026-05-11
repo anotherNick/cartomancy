@@ -117,7 +117,6 @@ async function doShuffle() {
   shuffleBtn.disabled = true;
   drawSection.style.display = 'none';
   drawnArea.innerHTML = '';
-  resetBtn.style.display = 'none';
   document.querySelectorAll('.draw-btn').forEach(b => b.disabled = false);
 
   statusEl.textContent = 'Shuffling…';
@@ -172,7 +171,6 @@ function drawCards(n) {
   if (!shuffled || deck.length < n) return;
 
   drawnArea.innerHTML = '';
-  resetBtn.style.display = 'none';
 
   const drawn = deck.splice(0, n);
   statusEl.textContent = `${deck.length} card${deck.length !== 1 ? 's' : ''} remaining`;
@@ -198,9 +196,6 @@ function drawCards(n) {
     document.querySelectorAll('.draw-btn').forEach(b => b.disabled = true);
   }
 
-  setTimeout(() => {
-    resetBtn.style.display = 'inline-block';
-  }, 400 + n * 130);
 }
 
 /* ── Reset ── */
@@ -210,7 +205,6 @@ function resetDeck() {
   deck = [];
   drawnArea.innerHTML = '';
   drawSection.style.display = 'none';
-  resetBtn.style.display = 'none';
   document.querySelectorAll('.draw-btn').forEach(b => b.disabled = false);
   shuffleBtn.textContent = 'Shuffle';
   statusEl.textContent = 'Press shuffle to begin';
@@ -220,7 +214,6 @@ function resetDeck() {
 /* ── Wire up events ── */
 
 shuffleBtn.addEventListener('click', doShuffle);
-resetBtn.addEventListener('click', resetDeck);
 document.querySelectorAll('.draw-btn').forEach(btn => {
   btn.addEventListener('click', () => drawCards(Number(btn.dataset.n)));
 });
