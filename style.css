@@ -1,0 +1,237 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #111;
+  font-family: 'EB Garamond', Georgia, serif;
+}
+
+#app {
+  min-height: 520px;
+  width: 560px;
+  max-width: 100vw;
+  background: #1a2e1a;
+  background-image: radial-gradient(ellipse at 50% 0%, #2a4a2a 0%, #1a2e1a 60%);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 36px 28px 40px;
+  position: relative;
+  overflow: hidden;
+}
+
+#app::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 24px, rgba(255,255,255,0.015) 24px, rgba(255,255,255,0.015) 25px),
+    repeating-linear-gradient(90deg, transparent, transparent 24px, rgba(255,255,255,0.015) 24px, rgba(255,255,255,0.015) 25px);
+  pointer-events: none;
+}
+
+#title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: #d4af6a;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  text-align: center;
+  position: relative;
+}
+
+#subtitle {
+  font-size: 14px;
+  color: rgba(212, 175, 106, 0.5);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 28px;
+  text-align: center;
+  position: relative;
+}
+
+/* ── Deck stack ── */
+
+#deck-area {
+  position: relative;
+  width: 120px;
+  height: 170px;
+  margin-bottom: 28px;
+}
+
+.stack-card {
+  position: absolute;
+  width: 90px;
+  height: 126px;
+  border-radius: 6px;
+  background: #1e3fa8;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.stack-card::after {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border-radius: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+@keyframes shuffleSpread {
+  0%   { transform: translate(calc(-50% + var(--ox, 0px)), calc(-50% + var(--oy, 0px))) rotate(var(--or, 0deg)); }
+  30%  { transform: translate(calc(-50% + var(--tx, 0px)), calc(-50% + var(--ty, 0px))) rotate(var(--tr, 0deg)); }
+  70%  { transform: translate(calc(-50% + var(--tx, 0px)), calc(-50% + var(--ty, 0px))) rotate(var(--tr, 0deg)); }
+  100% { transform: translate(calc(-50% + var(--ox, 0px)), calc(-50% + var(--oy, 0px))) rotate(var(--or, 0deg)); }
+}
+
+.shuffling {
+  animation: shuffleSpread 0.55s ease-in-out forwards;
+}
+
+/* ── Buttons ── */
+
+#shuffle-btn {
+  background: transparent;
+  border: 1.5px solid #d4af6a;
+  color: #d4af6a;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 15px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 11px 32px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+#shuffle-btn:hover { background: rgba(212, 175, 106, 0.12); }
+#shuffle-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* ── Status ── */
+
+#status {
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.05em;
+  min-height: 22px;
+  margin-bottom: 24px;
+  text-align: center;
+  position: relative;
+}
+
+/* ── Draw section ── */
+
+#draw-section {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  position: relative;
+}
+
+#draw-label {
+  font-size: 14px;
+  color: rgba(212, 175, 106, 0.7);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+#draw-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.draw-btn {
+  background: transparent;
+  border: 1.5px solid rgba(212, 175, 106, 0.5);
+  color: #d4af6a;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 20px;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.draw-btn:hover {
+  background: rgba(212, 175, 106, 0.15);
+  border-color: #d4af6a;
+}
+
+.draw-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* ── Drawn cards ── */
+
+#drawn-area {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+  min-height: 10px;
+}
+
+.card-display {
+  width: 90px;
+  height: 126px;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  flex-shrink: 0;
+  opacity: 0;
+  transform: translateY(30px) rotate(var(--rot, 0deg));
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.card-display.visible {
+  opacity: 1;
+  transform: translateY(0) rotate(var(--rot, 0deg));
+}
+
+.card-display canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ── Reset ── */
+
+#reset-btn {
+  display: none;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.45);
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  padding: 7px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+#reset-btn:hover {
+  color: rgba(255, 255, 255, 0.8);
+  border-color: rgba(255, 255, 255, 0.4);
+}
